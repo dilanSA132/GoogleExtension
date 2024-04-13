@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Counter from './componentes/count.tsx'
 import './styles/index.css'
+import Header  from './componentes/header.tsx'
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <div className="bottom-0"><Counter/></div>
-    <p className="text-red-500">Este es un componente con estilos de Tailwind CSS.</p>    
+  <Header />
+  
   </React.StrictMode>,
 )
