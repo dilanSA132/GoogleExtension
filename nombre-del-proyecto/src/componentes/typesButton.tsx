@@ -8,22 +8,64 @@ const TypesButtons = () => {
   const [selectedButton, setSelectedButton] = useState<number | undefined>(undefined);
 
   const sendMessageToGemini = (prompt: string | undefined) => {
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-      const activeTab = tabs[0];
-      if (activeTab && typeof activeTab.id === 'number') {
-        chrome.tabs.sendMessage(activeTab.id, { prompt }, (response) => {
-          if (chrome.runtime.lastError) {
-            console.error("Error al enviar el mensaje:", chrome.runtime.lastError.message);
-          } else {
-            console.log("Mensaje enviado con éxito:", response);
+    chrome.tabs.create({ url: 'https://gemini.google.com/app', active: false }, (newTab) => {
+      if (chrome.runtime.lastError) {
+        console.error("Error al abrir la pestaña de Gemini:", chrome.runtime.lastError.message);
+      } else {
+        console.log("Pestaña de Gemini abierta con éxito:", newTab);
+        let tabLoaded = false;
+  
+        const listener = function(tabId: number, changeInfo: chrome.tabs.TabChangeInfo) {
+          if (tabId === newTab.id && changeInfo.status === 'complete') {
+            console.log("La pestaña de Gemini ha cargado completamente.");
+            tabLoaded = true;
+            if (prompt && typeof newTab.id === 'number') {
+              chrome.tabs.sendMessage(newTab.id, { prompt }, (response) => {
+                if (chrome.runtime.lastError) {
+                  console.error("Error al enviar el mensaje a Gemini:", chrome.runtime.lastError.message);
+                } else {
+                  console.log("Mensaje enviado con éxito a Gemini:", response);
+                }
+              });
+            } else {
+              console.error("Error: ID de pestaña no válido.");
+            }
+            chrome.tabs.onUpdated.removeListener(listener);
+          }
+        };
+  
+        chrome.tabs.onUpdated.addListener(listener);
+  
+        chrome.tabs.get(newTab.id!, (tab) => {
+          if (tab.status === 'complete') {
+            console.log("La pestaña de Gemini ya estaba cargada.");
+            tabLoaded = true;
+            if (prompt && typeof newTab.id === 'number') {
+              chrome.tabs.sendMessage(newTab.id!, { prompt }, (response) => {
+                if (chrome.runtime.lastError) {
+                  console.error("Error al enviar el mensaje a Gemini:", chrome.runtime.lastError.message);
+                } else {
+                  console.log("Mensaje enviado con éxito a Gemini:", response);
+                }
+              });
+            } else {
+              console.error("Error: ID de pestaña no válido.");
+            }
+            chrome.tabs.onUpdated.removeListener(listener);
           }
         });
-      } else {
-        console.error("Error: No se pudo obtener el ID de la pestaña activa.");
+  
+        setTimeout(() => {
+          if (!tabLoaded) {
+            console.log("La pestaña de Gemini tardó demasiado en cargar. Cancelando.");
+            chrome.tabs.onUpdated.removeListener(listener);
+          }
+        }, 10000);
       }
     });
   };
-
+  
+  
   const handleSubmit = () => {
     console.log(`Button clicked with type: ${clickedType}`);
     console.log(`Prompt: ${prompInfo}`);
@@ -52,18 +94,6 @@ const TypesButtons = () => {
         onClick={() => handleButtonClick('Tool Use')}
       >
         Tool Use
-      </button>
-      <button
-        className={`bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full mr-4 ${clickedType === 'Planning' ? 'opacity-50' : ''}`}
-        onClick={() => handleButtonClick('Planning')}
-      >
-        Planning
-      </button>
-      <button
-        className={`bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mr-4 ${clickedType === 'Multi-Agent' ? 'opacity-50' : ''}`}
-        onClick={() => handleButtonClick('Multi-Agent')}
-      >
-        Multi-Agent
       </button>
       <div className="flex justify-center">  
         <button
