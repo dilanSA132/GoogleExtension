@@ -14,7 +14,6 @@ const TypesButtons = () => {
       } else {
         console.log("Pestaña de Gemini abierta con éxito:", newTab);
         let tabLoaded = false;
-  
         const listener = function(tabId: number, changeInfo: chrome.tabs.TabChangeInfo) {
           if (tabId === newTab.id && changeInfo.status === 'complete') {
             console.log("La pestaña de Gemini ha cargado completamente.");
@@ -33,9 +32,7 @@ const TypesButtons = () => {
             chrome.tabs.onUpdated.removeListener(listener);
           }
         };
-  
         chrome.tabs.onUpdated.addListener(listener);
-  
         chrome.tabs.get(newTab.id!, (tab) => {
           if (tab.status === 'complete') {
             console.log("La pestaña de Gemini ya estaba cargada.");
@@ -54,7 +51,6 @@ const TypesButtons = () => {
             chrome.tabs.onUpdated.removeListener(listener);
           }
         });
-  
         setTimeout(() => {
           if (!tabLoaded) {
             console.log("La pestaña de Gemini tardó demasiado en cargar. Cancelando.");
@@ -73,7 +69,6 @@ const TypesButtons = () => {
     if (clickedType === 'Gemini' && selectedButton !== undefined) {
       sendMessageToGemini(prompInfo);
     } else if(clickedType === 'ChatGPT') {
-      // Lógica para enviar el prompt a ChatGPT
     }
   };
 
