@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "My first Extension",
+  "name": "IA Generate",
   "version": "0.3",
   "permissions": [
     "tabs",
@@ -15,9 +15,9 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "Icon.PNG",  
-      "48": "Icon.PNG",  
-      "128": "Icon.PNG"  
+      "16": "Icon.png",  
+      "48": "Icon.png",  
+      "128": "Icon.png"  
     }
   }
 }

@@ -9,21 +9,15 @@ export const sendMessageToTab = (prompt: string, clickedType: string) => {
   chrome.tabs.create({ url, active: false }, (newTab) => {
     if (chrome.runtime.lastError) {
       console.error(
-        `Error al abrir la pestaña (${url}):`,
         chrome.runtime.lastError.message
       );
     } else {
-      console.log(`Pestaña abierta con éxito (${url}):`, newTab);
-
       const listener = function (
         tabId: number,
         changeInfo: chrome.tabs.TabChangeInfo
       ) {
         if (tabId === newTab.id && changeInfo.status === "complete") {
           chrome.tabs.update(newTab.id, { active: true });
-
-          console.log(`La pestaña ha cargado completamente (${url}).`);
-
           if (prompt && typeof newTab.id === "number") {
             chrome.tabs.sendMessage(newTab.id, { prompt }, (response) => {
               if (chrome.runtime.lastError) {
