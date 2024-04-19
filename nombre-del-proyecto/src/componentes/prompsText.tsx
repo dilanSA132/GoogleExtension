@@ -8,20 +8,23 @@ const PromptText = () => {
     const description = event.target.value;
     setPromptDescription(description); 
   };
-
   return (
-    <div className="mt-4 w-full">
-      <label className="text-gray-700 text-sm font-bold mb-2 ml-3" htmlFor="prompt">
-        Write your prompt here to send:
-      </label>
-      <textarea
-        id="prompt"
-        className="shadow appearance-none border rounded w-full py-2 px-3 ml-3 mr-6 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        rows={15}
-        placeholder="Enter your prompt here..."
-        value={promptDescription} 
-        onChange={handlePromptChange} 
-      ></textarea>
+    <div className="flex justify-center mt-4 mr-8">
+      <div className="mt-4 w-full">
+      <label className="text-white text-sm font-bold mb-2 ml-3" htmlFor="prompt">
+          Write your prompt here to send:
+        </label>
+        <textarea
+          id="prompt"
+          className="shadow appearance-none border rounded-lg w-full py-2 px-3 ml-3 bg-gradient-to-r from-purple-400 to-blue-500 p-4 rounded-md text-white"
+          rows={15}
+         
+          placeholder="Enter your prompt here..."
+          value={promptDescription} 
+          onChange={handlePromptChange} 
+          
+        ></textarea>
+      </div>
     </div>
   );
 };
