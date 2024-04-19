@@ -54,7 +54,7 @@ const TypesButtons: React.FC = () => {
       <div className="flex justify-center mt-1 mb-4 ">  
         <button
           className={`bg-purple-500  hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full items-center ${clickedType === 'Enviar' ? 'opacity-50' : ''}`}
-          onClick={() => handleSubmit()} > Enviar
+          onClick={() => handleSubmit()} > SEND
         </button>
       </div>
     </div>

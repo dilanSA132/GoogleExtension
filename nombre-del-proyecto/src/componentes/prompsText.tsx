@@ -9,7 +9,7 @@ const PromptText = () => {
     setPromptDescription(description); 
   };
   return (
-    <div className="flex justify-center mt-4 mr-8">
+    <div className="flex justify-center mt-2 mr-8">
       <div className="mt-4 w-full">
       <label className="text-white text-sm font-bold mb-2 ml-3" htmlFor="prompt">
           Write your prompt here to send:
