@@ -1,8 +1,6 @@
 import useButtonStore from '../stores/buttonStore';
-
 const ButtonComponent = () => {
   const { selectedButton, setSelectedButton } = useButtonStore();
-
   return (
     <div>
       <button

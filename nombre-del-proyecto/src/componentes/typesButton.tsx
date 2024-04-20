@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import useButtonStore from '../stores/buttonStore'; 
 import usePromptStore from '../stores/prompStore'; 
 import { sendMessageToTab } from '../utils/chromeUtils'; 
-
 const TypesButtons: React.FC = () => {
   const clickedType = useButtonStore((state) => state.selectedButton); 
   const prompInfo = usePromptStore((state) => state.promptDescription); 
@@ -11,8 +10,7 @@ const TypesButtons: React.FC = () => {
   const setIsLoading = useButtonStore((state) => state.setIsLoading);
   const handleSubmit = () => {
     if ((clickedType === 'Gemini' || clickedType === 'ChatGPT') && selectedButton !== undefined) {
-      setIsLoading(true); 
-      setTimeout(() => {
+      setIsLoading(true);  setTimeout(() => {
         let message;
         if (selectedLanguage === "English") {
           if (selectedButton === 'Reflection') {

@@ -5,12 +5,9 @@ export const sendMessageToTab = (prompt: string, clickedType: string) => {
   } else {
     url = "https://chat.openai.com";
   }
-
   chrome.tabs.create({ url, active: false }, (newTab) => {
     if (chrome.runtime.lastError) {
-      console.error(
-        chrome.runtime.lastError.message
-      );
+      alert(`Error: ${chrome.runtime.lastError.message}`);
     } else {
       const listener = function (
         tabId: number,
@@ -21,21 +18,13 @@ export const sendMessageToTab = (prompt: string, clickedType: string) => {
           if (prompt && typeof newTab.id === "number") {
             chrome.tabs.sendMessage(newTab.id, { prompt }, (response) => {
               if (chrome.runtime.lastError) {
-                console.error(
-                  `Error al enviar el mensaje a la pestaña (${url}):`,
-                  chrome.runtime.lastError.message
-                );
+                alert(`Error al enviar el mensaje a la pestaña (${url}): ${chrome.runtime.lastError.message}`);
               } else {
-                console.log(
-                  `Mensaje enviado con éxito a la pestaña (${url}):`,
-                  response
-                );
+                alert(`Mensaje enviado con éxito a la pestaña (${url}): ${response}`);
               }
             });
           } else {
-            console.error(
-              `Error: ID de pestaña no válido o prompt vacío (${url}).`
-            );
+            alert(`Error: ID de pestaña no válido o prompt vacío (${url}).`);
           }
           chrome.tabs.onUpdated.removeListener(listener);
         }
