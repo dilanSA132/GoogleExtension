@@ -1,13 +1,10 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-
 #root {
     width: 80vh; 
     height: 50vh; 
- 
   }
-  
 body {
   background: linear-gradient(90deg, #FF0080, #7928CA);
   margin: 0;
