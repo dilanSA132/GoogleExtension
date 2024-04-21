@@ -7,8 +7,8 @@ import PromptText from './componentes/prompsText.tsx';
 import './styles/index.css';
 import TypesButtons from './componentes/typesButton.tsx';
 import SkeletonHeader from './utils/skeletonHeader.tsx';
-import { AlertProps } from './componentes/Alert.tsx';
-import Alert from './componentes/Alert.tsx';
+import { AlertProps } from './componentes/alertsCom.tsx';
+import Alert from './componentes/alertsCom.tsx';
 const alertProps: AlertProps = {
   type: 'success',
   message: `El mensaje fue enviado con exito`

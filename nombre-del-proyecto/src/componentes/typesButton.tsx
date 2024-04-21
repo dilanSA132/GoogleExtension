@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import useButtonStore from '../stores/buttonStore'; 
 import usePromptStore from '../stores/prompStore'; 
 import { sendMessageToTab } from '../utils/chromeUtils'; 
+import { saveDataToAirtable } from '../services/Airtable';
 const TypesButtons: React.FC = () => {
   const clickedType = useButtonStore((state) => state.selectedButton); 
   const prompInfo = usePromptStore((state) => state.promptDescription); 
   const [selectedButton, setSelectedButton] = useState<string | undefined>(undefined);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
   const setIsLoading = useButtonStore((state) => state.setIsLoading);
+  const dataToSave = { Promp: prompInfo, WorkFlow: selectedButton, IA: clickedType, Result:"" };
   const handleSubmit = () => {
+    saveDataToAirtable(dataToSave);
     if ((clickedType === 'Gemini' || clickedType === 'ChatGPT') && selectedButton !== undefined) {
-      setIsLoading(true);  setTimeout(() => {
-        let message;
+      setIsLoading(true);  setTimeout(() => { let message;
         if (selectedLanguage === "English") {
           if (selectedButton === 'Reflection') {
             message = `Please analyze the following programming problem: ${prompInfo}. After analyzing the error, kindly propose a solution. Additionally, provide feedback on the correctness of your answer and elucidate any discrepancies if present. Please answer in English`;
