@@ -2,18 +2,20 @@ import React, { useState } from 'react';
 import useButtonStore from '../stores/buttonStore'; 
 import usePromptStore from '../stores/prompStore'; 
 import { sendMessageToTab } from '../utils/chromeUtils'; 
-import { saveDataToAirtable } from '../services/Airtable';
+import { saveDataToAirtable } from '../services/airtableregister';
+import {getIPAddress} from '../services/ipAdreess'
+
 const TypesButtons: React.FC = () => {
   const clickedType = useButtonStore((state) => state.selectedButton); 
   const prompInfo = usePromptStore((state) => state.promptDescription); 
   const [selectedButton, setSelectedButton] = useState<string | undefined>(undefined);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("English");
   const setIsLoading = useButtonStore((state) => state.setIsLoading);
-  const dataToSave = { Promp: prompInfo, WorkFlow: selectedButton, IA: clickedType, Result:"" };
-  const handleSubmit = () => {
-    saveDataToAirtable(dataToSave);
+ 
+  const handleSubmit = async() => {
+   
     if ((clickedType === 'Gemini' || clickedType === 'ChatGPT') && selectedButton !== undefined) {
-      setIsLoading(true);  setTimeout(() => { let message;
+      setIsLoading(true);  setTimeout(async () => { let message;
         if (selectedLanguage === "English") {
           if (selectedButton === 'Reflection') {
             message = `Please analyze the following programming problem: ${prompInfo}. After analyzing the error, kindly propose a solution. Additionally, provide feedback on the correctness of your answer and elucidate any discrepancies if present. Please answer in English`;
@@ -27,6 +29,9 @@ const TypesButtons: React.FC = () => {
             message = `Según discusiones en varios foros de renombre como Stack Overflow, GitHub Issues, LinkedIn y otras plataformas relacionadas con la programación, se te solicita que abordes el(s) siguiente(s) error(es) proporcionado(s) a continuación: Error(es) encontrados:${prompInfo}. Tu respuesta debe ser exhaustiva y bien informada, extrayendo información de estas plataformas y de cualquier otro recurso de programación relevante. Además, especifica las herramientas y metodologías que utilizas en tu análisis y resolución. Por favor responde en español`;
           }
         }
+        const ip = await getIPAddress();
+        const dataToSave = { Promp: message, WorkFlow: selectedButton, IA: clickedType, Ip: ip };
+        saveDataToAirtable(dataToSave);
         sendMessageToTab(message, clickedType);
       }, 5000); 
     }

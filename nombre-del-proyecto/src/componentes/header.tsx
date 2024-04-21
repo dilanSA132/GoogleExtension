@@ -2,7 +2,6 @@ import useButtonStore from '../stores/buttonStore'
 
 const Header = () => {
   const selectedButton = useButtonStore((state) => state.selectedButton);
-
   return (
     <header className="bg-blue-500 text-white p-4 flex items-center">
       <div>
